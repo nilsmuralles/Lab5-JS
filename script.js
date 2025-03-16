@@ -35,6 +35,26 @@ const messages = [
     "text": "Me responden cualquier cosa",
     "user": "Usuario2"
   },
+  {
+    "id": 8,
+    "text": "Este es un mensaje corto",
+    "user": "José Carlos"
+  },
+  {
+    "id": 9,
+    "text": "Este es un mensaje corto",
+    "user": "José Carlos"
+  },
+  {
+    "id": 10,
+    "text": "",
+    "user": "Pepe"
+  },
+  {
+    "id": 11,
+    "text": "Mira a este perro https://misanimales.com/wp-content/uploads/2020/07/perro-beagle-contento.jpg",
+    "user": "AmoALosPerros"
+  },
 ]
 
 // Código final
@@ -79,6 +99,10 @@ const renderHomePage = () => {
 
 const renderMessages = () => {
   const messagesSection = document.querySelector('.messages-section')
+  messagesSection.style.maxHeight = '65dvh'
+  messagesSection.style.overflowY = 'auto'; 
+  messagesSection.style.scrollbarWidth = 'none'; 
+  messagesSection.style.msOverflowStyle = 'none'; 
 
   const messagesList = document.createElement('ul')
   messagesList.style.listStyle = 'none'
@@ -88,9 +112,12 @@ const renderMessages = () => {
   messagesList.style.flexDirection = 'column'
   messagesList.style.gap = '20px'
 
+  const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))/gi;
+
   messages.forEach(message => {
     const li = document.createElement('li')
-    li.style.maxWidth = 'fit-content'
+    li.style.width = 'fit-content'
+    li.style.maxWidth = '50dvw'
     li.style.display = 'flex'
     li.style.flexDirection = 'column'
     li.style.gap = '5px'
@@ -111,8 +138,23 @@ const renderMessages = () => {
       li.style.background = '#404156'
     }
 
+    if (message.text === '' || message.user === '') {
+      return  
+    }
+
+
     li.append(userSpan)
     li.append(messageP)
+    const imgLink = message.text.match(imageRegex)
+    if (imgLink) {
+      const img = document.createElement('img')
+
+      img.src = imgLink
+      img.style.width = '300px'
+      img.style.borderRadius = '8px'
+
+      li.append(img)
+    }
     messagesList.appendChild(li)
   })
   
