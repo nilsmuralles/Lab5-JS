@@ -123,23 +123,41 @@ const renderUserInput = () => {
   const inputSection = document.querySelector('.input-section')
   inputSection.style.display = 'flex'
   inputSection.style.justifyContent = 'center'
+  inputSection.style.margin = '20px'
 
   const form = document.createElement('form')
   form.style.margin = '0'
-  form.style.padding = '10px'
+  form.style.padding = '15px'
   form.style.borderRadius = '8px'
   form.style.display = 'flex'
   form.style.flexDirection = 'column'
   form.style.background = '#5e5c63'
 
-  const input = document.createElement('input')
-  input.type = 'text'
+  const input = document.createElement('textarea')
   input.placeholder = 'Escribe tu mensaje...'
+  input.style.border = 'none'
+  input.style.background = 'transparent'
+  input.style.color = 'White'
+  input.style.outline = 'none'
+  input.style.resize = 'none'
+  input.style.width = '60vw'
+  input.style.fontFamily = 'Roboto'
+  input.style.fontSize = '16px'
+  input.style.overflowY = 'auto'; 
+  input.style.scrollbarWidth = 'none'; 
+  input.style.msOverflowStyle = 'none'; 
 
   const button = document.createElement('button')
-  button.style.width = 'fit-content'
-  button.innerText = 'Enviar'
+  button.innerText = '>'
+  button.style.width = '30px'
+  button.style.height = '30px'
+  button.style.padding = '0'
+  button.style.borderRadius = '100%'
+  button.style.border = 'none'
+  button.style.outline = 'none'
   button.style.alignSelf = 'flex-end'
+  button.style.fontFamily = 'Roboto'
+  button.style.fontSize = '20px'
 
   form.appendChild(input)
   form.appendChild(button)
