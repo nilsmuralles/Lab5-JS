@@ -174,6 +174,7 @@ const renderUserInput = () => {
   form.style.display = 'flex'
   form.style.flexDirection = 'column'
   form.style.background = '#5e5c63'
+  form.style.gap = '10px'
 
   const input = document.createElement('textarea')
   input.placeholder = 'Escribe tu mensaje...'
@@ -189,6 +190,16 @@ const renderUserInput = () => {
   input.style.scrollbarWidth = 'none'; 
   input.style.msOverflowStyle = 'none'; 
 
+  const container = document.createElement('div')
+  container.style.display = 'flex'
+  container.style.justifyContent = 'space-between'
+
+  const characterSpan = document.createElement('span')
+  characterSpan.innerText = '0/140'
+  characterSpan.style.fontFamily = 'Roboto'
+  characterSpan.style.fontSize = '16px'
+  characterSpan.style.alignSelf = 'center'
+
   const button = document.createElement('button')
   button.innerText = '>'
   button.style.width = '30px'
@@ -201,8 +212,19 @@ const renderUserInput = () => {
   button.style.fontFamily = 'Roboto'
   button.style.fontSize = '20px'
 
+  input.addEventListener('input', () => {
+    const length = input.value.length
+    if (length <= 140) {
+      characterSpan.textContent = `${length}/140`
+    } else {
+      input.value = input.value.substring(0, 140)
+    }
+  })
+
+  container.append(characterSpan, button)
+
   form.appendChild(input)
-  form.appendChild(button)
+  form.appendChild(container)
 
   inputSection.appendChild(form)
 }
