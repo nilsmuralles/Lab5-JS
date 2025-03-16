@@ -25,6 +25,16 @@ const messages = [
     "text": "Este mensaje asjdfksdjflkdasjf lkje es de alguien más después de uno mío",
     "user": "Diego"
   },
+  {
+    "id": 6,
+    "text": "Yo respondo con algo",
+    "user": "Nils"
+  },
+  {
+    "id": 7,
+    "text": "Me responden cualquier cosa",
+    "user": "Usuario2"
+  },
 ]
 
 // Código final
@@ -36,8 +46,12 @@ const renderHomePage = () => {
   const body = document.querySelector('body')
   const main = document.createElement('main')
   const h1 = document.createElement('h1')
+
   const messagesSection = document.createElement('section')
   messagesSection.classList = ['messages-section']
+
+  const inputSection = document.createElement('section')
+  inputSection.classList = ['input-section']
 
   const bgcolor = '#272B2C'
   const font = 'Roboto'
@@ -56,9 +70,11 @@ const renderHomePage = () => {
 
   main.append(h1)
   main.append(messagesSection)
+  main.append(inputSection)
   body.append(main)
 
   renderMessages()
+  renderUserInput()
 }
 
 const renderMessages = () => {
@@ -101,6 +117,34 @@ const renderMessages = () => {
   })
   
   messagesSection.appendChild(messagesList)
+}
+
+const renderUserInput = () => {
+  const inputSection = document.querySelector('.input-section')
+  inputSection.style.display = 'flex'
+  inputSection.style.justifyContent = 'center'
+
+  const form = document.createElement('form')
+  form.style.margin = '0'
+  form.style.padding = '10px'
+  form.style.borderRadius = '8px'
+  form.style.display = 'flex'
+  form.style.flexDirection = 'column'
+  form.style.background = '#5e5c63'
+
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.placeholder = 'Escribe tu mensaje...'
+
+  const button = document.createElement('button')
+  button.style.width = 'fit-content'
+  button.innerText = 'Enviar'
+  button.style.alignSelf = 'flex-end'
+
+  form.appendChild(input)
+  form.appendChild(button)
+
+  inputSection.appendChild(form)
 }
 
 main()
