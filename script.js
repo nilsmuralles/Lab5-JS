@@ -1,65 +1,7 @@
-// Esto es lo que la API va a devolver
-const messages = [
-  {
-    "id": 1,
-    "text": "Este es un mensaje corto",
-    "user": "José Carlos"
-  },
-  {
-    "id": 2,
-    "text": "Este es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largoEste es un mensaje largo",
-    "user": "usuario"
-  },
-  {
-    "id": 3,
-    "text": "hola",
-    "user": "jaskdflaslkdfaslkdfjlkj"
-  },
-  {
-    "id": 4,
-    "text": "Este es un mensaje mio",
-    "user": "Nils"
-  },
-  {
-    "id": 5,
-    "text": "Este mensaje asjdfksdjflkdasjf lkje es de alguien más después de uno mío",
-    "user": "Diego"
-  },
-  {
-    "id": 6,
-    "text": "Yo respondo con algo",
-    "user": "Nils"
-  },
-  {
-    "id": 7,
-    "text": "Me responden cualquier cosa",
-    "user": "Usuario2"
-  },
-  {
-    "id": 8,
-    "text": "Este es un mensaje corto",
-    "user": "José Carlos"
-  },
-  {
-    "id": 9,
-    "text": "Este es un mensaje corto",
-    "user": "José Carlos"
-  },
-  {
-    "id": 10,
-    "text": "",
-    "user": "Pepe"
-  },
-  {
-    "id": 11,
-    "text": "Mira a este perro https://misanimales.com/wp-content/uploads/2020/07/perro-beagle-contento.jpg",
-    "user": "AmoALosPerros"
-  },
-]
-
-// Código final
 const main = () => {
   renderHomePage()
+  getMessages()
+  renderUserInput()
 }
 
 const renderHomePage = () => {
@@ -104,9 +46,6 @@ const renderHomePage = () => {
   main.append(messagesSection)
   main.append(inputSection)
   body.append(main)
-
-  renderMessages(messages)
-  renderUserInput(messages)
 }
 
 const renderMessages = (messages) => {
@@ -131,6 +70,7 @@ const renderMessages = (messages) => {
     const messageP = document.createElement('p')
     messageP.textContent = message.text
     messageP.style.margin = '0'
+    messageP.style.overflowWrap = 'break-word'
 
     if (message.user === 'Nils') {
       li.style.alignSelf = 'flex-end'
@@ -149,6 +89,7 @@ const renderMessages = (messages) => {
 
       img.src = imgLink
       img.style.width = '300px'
+      img.style.maxWidth = '100%'
       img.style.borderRadius = '8px'
 
       li.append(img)
@@ -158,7 +99,7 @@ const renderMessages = (messages) => {
   })
 }
 
-const renderUserInput = (messages) => {
+const renderUserInput = () => {
   const inputSection = document.querySelector('.input-section')
   const messagesList = document.querySelector('ul')
   inputSection.style.display = 'flex'
@@ -197,19 +138,13 @@ const renderUserInput = (messages) => {
       input.value = input.value.substring(0, 140)
     }
   })
+
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      e.preventDefault()
-      const newMessage = {
-        "id": 12,
-        "text": input.value,
-        "user": 'Nils'
-      }
-      messages.push(newMessage)
+      sendMessage(input.value)
       messagesList.innerHTML = ''
       input.value = ''
-      renderMessages(messages)
     }
   })
 
@@ -239,15 +174,9 @@ const renderUserInput = (messages) => {
 
   button.addEventListener('click', (e) => {
     e.preventDefault()
-    const newMessage = {
-      "id": 12,
-      "text": input.value,
-      "user": 'Nils'
-    }
-    messages.push(newMessage)
+    sendMessage(input.value)
     messagesList.innerHTML = ''
     input.value = ''
-    renderMessages(messages)
   })
 
   container.append(characterSpan, button)
@@ -256,6 +185,33 @@ const renderUserInput = (messages) => {
   form.appendChild(container)
 
   inputSection.appendChild(form)
+}
+
+const getMessages = async () => {
+  try {
+    const response = await fetch('https://chat.calicheoficial.lat/messages')
+    const messages = await response.json()
+    renderMessages(messages)
+  } catch (error) {
+    console.error('Error obteniendo mensajes', error);
+  }
+}
+
+const sendMessage = async (texto) => {
+  try {
+    await fetch('https://chat.calicheoficial.lat/messages', {
+      method: 'POST',
+      body: JSON.stringify(
+        {
+          text: texto,
+          user: 'Nils'
+        }
+      )
+    }) 
+    getMessages()
+  } catch (error) {
+    console.error('Error al enviar el mensaje', error);
+  }
 }
 
 main()
