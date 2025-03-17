@@ -63,46 +63,32 @@ const main = () => {
 }
 
 const renderHomePage = () => {
-  const body = document.querySelector('body')
-  const main = document.createElement('main')
-  const h1 = document.createElement('h1')
-
-  const messagesSection = document.createElement('section')
-  messagesSection.classList = ['messages-section']
-
-  const inputSection = document.createElement('section')
-  inputSection.classList = ['input-section']
-
   const bgcolor = '#272B2C'
   const font = 'Roboto'
-  
+
+  const body = document.querySelector('body')
   body.style.backgroundColor = bgcolor 
 
+  const main = document.createElement('main')
   main.style.fontFamily = font
   main.style.color = "White"
   main.style.padding = "10px"
 
+  const h1 = document.createElement('h1')
   h1.append('Web - Sección 20')
   h1.style.fontWeight = "lighter"
   h1.style.textAlign = "center"
 
+  const messagesSection = document.createElement('section')
+  messagesSection.classList = ['messages-section']
   messagesSection.style.padding = '20px'
-
-  main.append(h1)
-  main.append(messagesSection)
-  main.append(inputSection)
-  body.append(main)
-
-  renderMessages()
-  renderUserInput()
-}
-
-const renderMessages = () => {
-  const messagesSection = document.querySelector('.messages-section')
   messagesSection.style.maxHeight = '65dvh'
   messagesSection.style.overflowY = 'auto'; 
   messagesSection.style.scrollbarWidth = 'none'; 
   messagesSection.style.msOverflowStyle = 'none'; 
+
+  const inputSection = document.createElement('section')
+  inputSection.classList = ['input-section']
 
   const messagesList = document.createElement('ul')
   messagesList.style.listStyle = 'none'
@@ -112,6 +98,19 @@ const renderMessages = () => {
   messagesList.style.flexDirection = 'column'
   messagesList.style.gap = '20px'
 
+  messagesSection.appendChild(messagesList)
+
+  main.append(h1)
+  main.append(messagesSection)
+  main.append(inputSection)
+  body.append(main)
+
+  renderMessages(messages)
+  renderUserInput(messages)
+}
+
+const renderMessages = (messages) => {
+  const messagesList = document.querySelector('ul')
   const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))/gi;
 
   messages.forEach(message => {
@@ -142,7 +141,6 @@ const renderMessages = () => {
       return  
     }
 
-
     li.append(userSpan)
     li.append(messageP)
     const imgLink = message.text.match(imageRegex)
@@ -155,14 +153,14 @@ const renderMessages = () => {
 
       li.append(img)
     }
+
     messagesList.appendChild(li)
   })
-  
-  messagesSection.appendChild(messagesList)
 }
 
-const renderUserInput = () => {
+const renderUserInput = (messages) => {
   const inputSection = document.querySelector('.input-section')
+  const messagesList = document.querySelector('ul')
   inputSection.style.display = 'flex'
   inputSection.style.justifyContent = 'center'
   inputSection.style.margin = '20px'
@@ -177,6 +175,7 @@ const renderUserInput = () => {
   form.style.gap = '10px'
 
   const input = document.createElement('textarea')
+  input.id = 'user-input'
   input.placeholder = 'Escribe tu mensaje...'
   input.style.border = 'none'
   input.style.background = 'transparent'
@@ -190,9 +189,19 @@ const renderUserInput = () => {
   input.style.scrollbarWidth = 'none'; 
   input.style.msOverflowStyle = 'none'; 
 
+  input.addEventListener('input', () => {
+    const length = input.value.length
+    if (length <= 140) {
+      characterSpan.textContent = `${length}/140`
+    } else {
+      input.value = input.value.substring(0, 140)
+    }
+  })
+
   const container = document.createElement('div')
   container.style.display = 'flex'
   container.style.justifyContent = 'space-between'
+  container.style.padding = '5px 10px'
 
   const characterSpan = document.createElement('span')
   characterSpan.innerText = '0/140'
@@ -202,6 +211,7 @@ const renderUserInput = () => {
 
   const button = document.createElement('button')
   button.innerText = '>'
+  button.id = 'submit-button'
   button.style.width = '30px'
   button.style.height = '30px'
   button.style.padding = '0'
@@ -212,13 +222,17 @@ const renderUserInput = () => {
   button.style.fontFamily = 'Roboto'
   button.style.fontSize = '20px'
 
-  input.addEventListener('input', () => {
-    const length = input.value.length
-    if (length <= 140) {
-      characterSpan.textContent = `${length}/140`
-    } else {
-      input.value = input.value.substring(0, 140)
+  button.addEventListener('click', (e) => {
+    e.preventDefault()
+    const newMessage = {
+      "id": 12,
+      "text": input.value,
+      "user": 'Nils'
     }
+    messages.push(newMessage)
+    messagesList.innerHTML = ''
+    input.value = ''
+    renderMessages(messages)
   })
 
   container.append(characterSpan, button)
