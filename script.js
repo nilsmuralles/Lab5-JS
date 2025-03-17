@@ -197,6 +197,21 @@ const renderUserInput = (messages) => {
       input.value = input.value.substring(0, 140)
     }
   })
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      e.preventDefault()
+      const newMessage = {
+        "id": 12,
+        "text": input.value,
+        "user": 'Nils'
+      }
+      messages.push(newMessage)
+      messagesList.innerHTML = ''
+      input.value = ''
+      renderMessages(messages)
+    }
+  })
 
   const container = document.createElement('div')
   container.style.display = 'flex'
