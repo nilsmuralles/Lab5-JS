@@ -50,6 +50,7 @@ const renderHomePage = () => {
 
 const renderMessages = (messages) => {
   const messagesList = document.querySelector('ul')
+  const messagesSection = document.querySelector('.messages-section')
   const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))/gi;
 
   messages.forEach(message => {
@@ -97,6 +98,7 @@ const renderMessages = (messages) => {
 
     messagesList.appendChild(li)
   })
+  messagesSection.scrollTop = messagesSection.scrollHeight 
 }
 
 const renderUserInput = () => {
